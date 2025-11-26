@@ -145,34 +145,38 @@ export const Navbar: React.FC = () => {
                 <div className="space-y-1 bg-white px-4 pb-3 pt-2 shadow-lg border-b border-gray-100">
                     {user ? (
                         <>
+                            <div className="flex items-center px-3 mb-3 pb-2 border-b border-gray-100">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 text-primary-700">
+                                    <User className="h-4 w-4" />
+                                </div>
+                                <div className="ml-3">
+                                    <div className="text-sm font-medium text-gray-900">{user.email}</div>
+                                </div>
+                            </div>
                             {role === 'admin' ? (
                                 <>
-                                    <Link to="/admin" className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600">
-                                        Dashboard
-                                    </Link>
-                                    <Link to="/admin/events" className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600">
-                                        Manage Events
-                                    </Link>
+                                    {location.pathname !== '/admin' && (
+                                        <Link to="/admin" className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600">
+                                            Dashboard
+                                        </Link>
+                                    )}
+
                                 </>
                             ) : (
                                 <>
-                                    <Link to="/events" className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600">
-                                        Browse Events
-                                    </Link>
-                                    <Link to="/my-registrations" className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600">
-                                        My Registrations
-                                    </Link>
+                                    {location.pathname !== '/events' && (
+                                        <Link to="/events" className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600">
+                                            Browse Events
+                                        </Link>
+                                    )}
+                                    {location.pathname !== '/my-registrations' && (
+                                        <Link to="/my-registrations" className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600">
+                                            My Registrations
+                                        </Link>
+                                    )}
                                 </>
                             )}
-                            <div className="mt-4 border-t border-gray-100 pt-4">
-                                <div className="flex items-center px-3 mb-3">
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 text-primary-700">
-                                        <User className="h-4 w-4" />
-                                    </div>
-                                    <div className="ml-3">
-                                        <div className="text-sm font-medium text-gray-900">{user.email}</div>
-                                    </div>
-                                </div>
+                            <div className="mt-2 pt-2">
                                 <Button variant="danger" className="w-full justify-center" onClick={handleLogout}>
                                     <LogOut className="mr-2 h-4 w-4" />
                                     Sign Out
