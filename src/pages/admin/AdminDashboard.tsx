@@ -4,6 +4,9 @@ import { Button } from '../../components/ui/Button';
 import { Calendar, Users, Star, TrendingUp, Plus, Edit, Trash2 } from 'lucide-react';
 import { getDashboardStats, getEvents, deleteEvent, type Event } from '../../lib/db';
 import { EventModal } from './EventModal';
+import { RegistrationsModal } from './RegistrationsModal';
+import { AllRegistrationsModal } from './AllRegistrationsModal';
+import { EventDetailsModal } from '../user/EventDetailsModal';
 
 export const AdminDashboard: React.FC = () => {
     const [stats, setStats] = useState({
@@ -15,6 +18,9 @@ export const AdminDashboard: React.FC = () => {
     const [events, setEvents] = useState<Event[]>([]);
     const [isEventModalOpen, setIsEventModalOpen] = useState(false);
     const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+    const [viewingRegistrations, setViewingRegistrations] = useState<Event | null>(null);
+    const [viewingEventDetails, setViewingEventDetails] = useState<Event | null>(null);
+    const [isAllRegistrationsModalOpen, setIsAllRegistrationsModalOpen] = useState(false);
 
     const fetchData = async () => {
         try {
@@ -52,13 +58,17 @@ export const AdminDashboard: React.FC = () => {
 
     return (
         <div className="space-y-8 pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
                     <p className="mt-2 text-gray-600">Manage your events and track performance</p>
                 </div>
-                <div className="flex gap-3">
-                    <Button onClick={handleCreate} className="bg-black text-white hover:bg-gray-800 shadow-lg">
+                <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                    <Button onClick={() => setIsAllRegistrationsModalOpen(true)} variant="outline" className="w-full sm:w-auto bg-white text-gray-700 border-gray-300 hover:bg-gray-50 shadow-sm order-1 sm:order-none">
+                        <Users className="mr-2 h-4 w-4" />
+                        View Registrations
+                    </Button>
+                    <Button onClick={handleCreate} className="w-full sm:w-auto bg-black text-white hover:bg-gray-800 shadow-lg order-2 sm:order-none">
                         <Plus className="mr-2 h-4 w-4" />
                         Create Event
                     </Button>
@@ -123,30 +133,40 @@ export const AdminDashboard: React.FC = () => {
                     <CardTitle>Event Management</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto max-w-full">
                         <table className="w-full text-left text-sm text-gray-500">
                             <thead className="bg-gray-50 text-xs uppercase text-gray-700">
                                 <tr>
                                     <th className="px-6 py-3">Event</th>
-                                    <th className="px-6 py-3">Date</th>
-                                    <th className="px-6 py-3">Location</th>
-                                    <th className="px-6 py-3">Status</th>
+                                    <th className="hidden sm:table-cell px-6 py-3">Date</th>
+                                    <th className="hidden md:table-cell px-6 py-3">Location</th>
+                                    <th className="hidden lg:table-cell px-6 py-3">Status</th>
                                     <th className="px-6 py-3 text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
                                 {events.map((event) => (
                                     <tr key={event.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 font-medium text-gray-900">{event.title}</td>
-                                        <td className="px-6 py-4">{event.date}</td>
-                                        <td className="px-6 py-4">{event.location}</td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 font-medium text-gray-900">
+                                            <button
+                                                onClick={() => setViewingEventDetails(event)}
+                                                className="hover:text-primary-600 hover:underline text-left focus:outline-none"
+                                            >
+                                                {event.title}
+                                            </button>
+                                        </td>
+                                        <td className="hidden sm:table-cell px-6 py-4">{event.date}</td>
+                                        <td className="hidden md:table-cell px-6 py-4">{event.location}</td>
+                                        <td className="hidden lg:table-cell px-6 py-4">
                                             <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
                                                 Upcoming
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <div className="flex justify-end gap-2">
+                                                <Button variant="ghost" size="sm" onClick={() => setViewingRegistrations(event)} title="View Registrations">
+                                                    <Users className="h-4 w-4 text-blue-600" />
+                                                </Button>
                                                 <Button variant="ghost" size="sm" onClick={() => handleEdit(event)}>
                                                     <Edit className="h-4 w-4" />
                                                 </Button>
@@ -176,6 +196,32 @@ export const AdminDashboard: React.FC = () => {
                     onClose={() => setIsEventModalOpen(false)}
                     onSuccess={fetchData}
                     initialData={editingEvent}
+                />
+            )}
+
+            {viewingRegistrations && (
+                <RegistrationsModal
+                    isOpen={!!viewingRegistrations}
+                    onClose={() => setViewingRegistrations(null)}
+                    eventId={viewingRegistrations.id!}
+                    eventTitle={viewingRegistrations.title}
+                />
+            )}
+
+            {isAllRegistrationsModalOpen && (
+                <AllRegistrationsModal
+                    isOpen={isAllRegistrationsModalOpen}
+                    onClose={() => setIsAllRegistrationsModalOpen(false)}
+                    events={events}
+                />
+            )}
+
+            {viewingEventDetails && (
+                <EventDetailsModal
+                    isOpen={!!viewingEventDetails}
+                    onClose={() => setViewingEventDetails(null)}
+                    event={viewingEventDetails}
+                    onRegister={() => { }} // Admin doesn't register
                 />
             )}
         </div>

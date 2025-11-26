@@ -13,14 +13,14 @@ interface EventDetailsModalProps {
 }
 
 export const EventDetailsModal: React.FC<EventDetailsModalProps> = ({ isOpen, onClose, event, onRegister }) => {
-    const { user } = useAuth();
+    const { user, role } = useAuth();
     const navigate = useNavigate();
 
     if (!isOpen || !event) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-fade-in">
-            <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden animate-scale-in">
+            <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden animate-scale-in max-h-[90vh] overflow-y-auto">
                 <div className="relative h-64 bg-gray-100">
                     {event.imageUrl ? (
                         <img
@@ -110,17 +110,19 @@ export const EventDetailsModal: React.FC<EventDetailsModalProps> = ({ isOpen, on
 
                     <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
                         <Button variant="secondary" onClick={onClose}>Close</Button>
-                        <Button onClick={() => {
-                            if (!user) {
-                                alert("Please signin first");
-                                navigate('/login');
-                                return;
-                            }
-                            onClose();
-                            onRegister();
-                        }} className="bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-xl shadow-blue-500/20">
-                            Register Now
-                        </Button>
+                        {role !== 'admin' && (
+                            <Button onClick={() => {
+                                if (!user) {
+                                    alert("Please signin first");
+                                    navigate('/login');
+                                    return;
+                                }
+                                onClose();
+                                onRegister();
+                            }} className="bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-xl shadow-blue-500/20">
+                                Register Now
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>

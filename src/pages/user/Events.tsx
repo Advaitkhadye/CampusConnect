@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../pages/auth/AuthContext';
 import { getEvents, type Event } from '../../lib/db';
 import { EventCard } from './EventCard';
 import { Search } from 'lucide-react';
@@ -13,6 +15,8 @@ export const Events: React.FC = () => {
     const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -43,6 +47,10 @@ export const Events: React.FC = () => {
     };
 
     const handleRegister = (event: Event) => {
+        if (!user) {
+            navigate('/login');
+            return;
+        }
         setSelectedEvent(event);
         setIsRegisterOpen(true);
     };

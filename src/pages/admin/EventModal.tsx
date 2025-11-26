@@ -63,7 +63,7 @@ export const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, onSucce
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="w-full max-w-lg rounded-xl bg-white shadow-2xl">
+            <div className="w-full max-w-lg rounded-xl bg-white shadow-2xl max-h-[90vh] overflow-y-auto">
                 <div className="flex items-center justify-between border-b border-gray-100 p-6">
                     <h2 className="text-xl font-semibold text-gray-900">
                         {initialData ? 'Edit Event' : 'Create New Event'}
@@ -143,10 +143,23 @@ export const EventModal: React.FC<EventModalProps> = ({ isOpen, onClose, onSucce
 
                     <Input
                         label="Event Image URL"
-                        value={formData.imageUrl || ''}
+                        value={formData.imageUrl}
                         onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                         placeholder="https://example.com/image.jpg"
                     />
+
+                    {formData.imageUrl && (
+                        <div className="mt-2 relative rounded-lg overflow-hidden border border-gray-200 aspect-video bg-gray-50">
+                            <img
+                                src={formData.imageUrl}
+                                alt="Preview"
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x400?text=Invalid+Image+URL';
+                                }}
+                            />
+                        </div>
+                    )}
 
                     <div className="flex justify-end gap-3 pt-4">
                         <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>

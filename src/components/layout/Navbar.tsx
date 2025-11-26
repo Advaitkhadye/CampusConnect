@@ -185,7 +185,7 @@ export const Navbar: React.FC = () => {
                                 <Button variant="ghost" className="w-full justify-center">Sign In</Button>
                             </Link>
                             <Link to="/register" className="block">
-                                <Button className="w-full justify-center">Get Started</Button>
+                                <Button variant="ghost" className="w-full justify-center">Get Started</Button>
                             </Link>
                         </div>
                     )}

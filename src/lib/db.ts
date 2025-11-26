@@ -4,6 +4,7 @@ import {
     updateDoc,
     deleteDoc,
     doc,
+    getDoc,
     getDocs,
     query,
     where,
@@ -30,6 +31,7 @@ export interface Registration {
     userId: string;
     studentName: string;
     studentId: string;
+    studentEmail: string;
     timestamp: Timestamp;
 }
 
@@ -65,7 +67,33 @@ export const registerForEvent = async (registration: Omit<Registration, 'id' | '
 export const getEventRegistrations = async (eventId: string) => {
     const q = query(collection(db, 'registrations'), where('eventId', '==', eventId));
     const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Registration));
+
+    const registrations = await Promise.all(snapshot.docs.map(async (docSnapshot) => {
+        const data = docSnapshot.data() as Registration;
+        const reg = { id: docSnapshot.id, ...data };
+
+        // Backfill email if missing
+        if (!reg.studentEmail && reg.userId) {
+            try {
+                const userDoc = await getDoc(doc(db, 'users', reg.userId));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    if (userData.email) {
+                        // Update the registration with the email for future
+                        await updateDoc(doc(db, 'registrations', reg.id!), {
+                            studentEmail: userData.email
+                        });
+                        reg.studentEmail = userData.email;
+                    }
+                }
+            } catch (error) {
+                console.error("Error backfilling email for registration:", reg.id, error);
+            }
+        }
+        return reg;
+    }));
+
+    return registrations;
 };
 
 export const getUserRegistrations = async (userId: string) => {

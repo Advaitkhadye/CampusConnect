@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 import { Button } from '../../components/ui/Button';
 import { Calendar, Users, Star, TrendingUp, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Card, CardContent } from '../../components/ui/Card';
 
 export const Home: React.FC = () => {
+    const { role } = useAuth();
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero Section */}
@@ -22,7 +24,7 @@ export const Home: React.FC = () => {
 
                         <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 sm:text-6xl lg:text-7xl">
                             Connect, Create, and <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-indigo-600">
+                            <span className="text-indigo-600">
                                 Celebrate Campus Life
                             </span>
                         </h1>
@@ -32,12 +34,21 @@ export const Home: React.FC = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                            <Link to="/events">
-                                <Button size="lg" className="w-full sm:w-auto text-lg px-8 h-14 shadow-xl shadow-blue-500/40 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold border-none hover:shadow-blue-500/50 transition-all duration-300">
-                                    Explore Events
-                                    <ArrowRight className="ml-2 h-5 w-5" />
-                                </Button>
-                            </Link>
+                            {role === 'admin' ? (
+                                <Link to="/admin">
+                                    <Button size="lg" className="w-full sm:w-auto text-lg px-8 h-14 shadow-xl shadow-blue-500/40 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold border-none hover:shadow-blue-500/50 transition-all duration-300">
+                                        Admin Dashboard
+                                        <ArrowRight className="ml-2 h-5 w-5" />
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Link to="/events">
+                                    <Button size="lg" className="w-full sm:w-auto text-lg px-8 h-14 shadow-xl shadow-blue-500/40 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold border-none hover:shadow-blue-500/50 transition-all duration-300">
+                                        Explore Events
+                                        <ArrowRight className="ml-2 h-5 w-5" />
+                                    </Button>
+                                </Link>
+                            )}
                         </div>
 
                         <div className="pt-8 flex items-center justify-center gap-8 text-sm text-gray-500">

@@ -6,6 +6,7 @@ import { Calendar, MapPin, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 
+
 export const MyRegistrations: React.FC = () => {
     const { user } = useAuth();
     const [registrations, setRegistrations] = useState<Registration[]>([]);
@@ -37,7 +38,7 @@ export const MyRegistrations: React.FC = () => {
             }
         };
 
-        fetchData();
+
         fetchData();
     }, [user]);
 
@@ -72,7 +73,7 @@ export const MyRegistrations: React.FC = () => {
                         <p className="mt-2 text-gray-500">You haven't registered for any events yet.</p>
                         <div className="mt-6">
                             <Link to="/events">
-                                <Button>Browse Events</Button>
+                                <Button size="lg" className="w-full sm:w-auto text-lg px-8 h-14 shadow-xl shadow-blue-500/40 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold border-none hover:shadow-blue-500/50 transition-all duration-300">Browse Events</Button>
                             </Link>
                         </div>
                     </div>
@@ -110,7 +111,7 @@ export const MyRegistrations: React.FC = () => {
 
                                         <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
                                             <div className="flex flex-col text-xs text-gray-500">
-                                                <span>Registered on {reg.timestamp.toDate().toLocaleDateString()}</span>
+                                                <span>Registered on {reg.timestamp?.toDate ? reg.timestamp.toDate().toLocaleDateString() : 'Unknown date'}</span>
                                                 <span className="font-medium text-green-600 mt-1">Confirmed</span>
                                             </div>
                                             <Button

@@ -37,7 +37,8 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose, e
                 eventId: event.id!,
                 userId: user.uid,
                 studentName: formData.studentName,
-                studentId: formData.studentId
+                studentId: formData.studentId,
+                studentEmail: user.email || ''
             });
             onSuccess();
             onClose();
