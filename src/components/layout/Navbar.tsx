@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../pages/auth/AuthContext';
 import { Button } from '../ui/Button';
-import { Sparkles, LogOut, Menu, X, User } from 'lucide-react';
+import { LogOut, Menu, X, User } from 'lucide-react';
 import { auth } from '../../lib/firebase';
 import { signOut } from 'firebase/auth';
 import { cn } from '../../components/ui/Button'; // Re-using cn utility
@@ -73,9 +74,7 @@ export const Navbar: React.FC = () => {
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center gap-2">
                     <Link to="/" className="flex items-center gap-2 group">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-indigo-600 text-white transition-transform group-hover:scale-110">
-                            <Sparkles className="h-5 w-5" />
-                        </div>
+                        <img src="/logo.png" alt="Logo" className="h-8 w-8 rounded-lg object-cover transition-transform group-hover:scale-110" />
                         <span className="text-xl font-bold text-gray-900 tracking-tight">
                             CampusConnect
                         </span>
@@ -202,10 +201,11 @@ export const Navbar: React.FC = () => {
                     )}
                 </div>
             </div>
-            {isLoggingOut && (
+            {isLoggingOut && createPortal(
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-white/80 backdrop-blur-sm">
                     <Loader />
-                </div>
+                </div>,
+                document.body
             )}
         </nav>
     );
