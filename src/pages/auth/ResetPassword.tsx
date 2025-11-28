@@ -122,7 +122,7 @@ export const ResetPassword: React.FC = () => {
 
                                 <div className="relative">
                                     <Input
-                                        label="Re-enter new password*"
+                                        label="Confirm password"
                                         type={showPassword ? "text" : "password"}
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -140,10 +140,10 @@ export const ResetPassword: React.FC = () => {
 
                                 <Button
                                     type="submit"
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium h-12 text-base shadow-lg"
+                                    className="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium h-12 text-base shadow-lg"
                                     disabled={loading}
                                 >
-                                    {loading ? 'Resetting...' : 'Reset password'}
+                                    {loading ? 'Resetting...' : 'SAVE'}
                                 </Button>
                             </form>
                         )}

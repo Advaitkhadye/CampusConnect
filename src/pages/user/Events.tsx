@@ -6,6 +6,7 @@ import { EventCard } from './EventCard';
 import { Search } from 'lucide-react';
 import { EventDetailsModal } from './EventDetailsModal';
 import { RegisterModal } from './RegisterModal';
+import { Loader } from '../../components/ui/Loader';
 
 export const Events: React.FC = () => {
     const [events, setEvents] = useState<Event[]>([]);
@@ -48,6 +49,7 @@ export const Events: React.FC = () => {
 
     const handleRegister = (event: Event) => {
         if (!user) {
+            alert("Please sign in first");
             navigate('/login');
             return;
         }
@@ -90,7 +92,7 @@ export const Events: React.FC = () => {
             </div>
 
             {loading ? (
-                <div className="text-center py-12">Loading events...</div>
+                <Loader />
             ) : (
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {filteredEvents.map((event) => (

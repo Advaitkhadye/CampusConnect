@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Card, CardContent } from '../../components/ui/Card';
 import { Sparkles, ArrowRight } from 'lucide-react';
+import { Loader } from '../../components/ui/Loader';
 
 export const Register: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -68,6 +69,9 @@ export const Register: React.FC = () => {
             const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
             const user = userCredential.user;
 
+            // Artificial delay for realistic loading feel
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
             // Create user document
             await setDoc(doc(db, 'users', user.uid), {
                 uid: user.uid,
@@ -82,8 +86,7 @@ export const Register: React.FC = () => {
         } catch (err: any) {
             console.error(err);
             setError('Failed to create account. ' + err.message);
-        } finally {
-            setLoading(false);
+            setLoading(false); // Only stop loading on error
         }
     };
 
@@ -255,6 +258,11 @@ export const Register: React.FC = () => {
                     </Card>
                 </div>
             </div>
+            {loading && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+                    <Loader />
+                </div>
+            )}
         </div>
     );
 };

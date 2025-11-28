@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { Card, CardContent } from '../../components/ui/Card';
 import { Sparkles, ArrowRight } from 'lucide-react';
+import { Loader } from '../../components/ui/Loader';
 
 export const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -58,6 +59,9 @@ export const Login: React.FC = () => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
+            // Artificial delay for realistic loading feel
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
             // Check if user is admin (hardcoded for dev or from Firestore)
             if (user.email === 'admin@campusconnect.com') {
                 navigate('/admin');
@@ -74,8 +78,7 @@ export const Login: React.FC = () => {
         } catch (err: any) {
             console.error(err);
             setError('Failed to sign in. Please check your credentials.');
-        } finally {
-            setLoading(false);
+            setLoading(false); // Only stop loading on error
         }
     };
 
@@ -241,6 +244,11 @@ export const Login: React.FC = () => {
                     </Card>
                 </div>
             </div>
+            {loading && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+                    <Loader />
+                </div>
+            )}
         </div>
     );
 };

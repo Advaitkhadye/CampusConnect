@@ -10,6 +10,7 @@ import { Home } from './pages/user/Home';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { Events } from './pages/user/Events';
 import { MyRegistrations } from './pages/user/MyRegistrations';
+import { Loader } from './components/ui/Loader';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode; requireAdmin?: boolean }> = ({
   children,
@@ -18,7 +19,11 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; requireAdmin?: boole
   const { user, role, loading } = useAuth();
 
   if (loading) {
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   if (!user) {

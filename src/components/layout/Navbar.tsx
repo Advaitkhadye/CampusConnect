@@ -6,6 +6,7 @@ import { Sparkles, LogOut, Menu, X, User } from 'lucide-react';
 import { auth } from '../../lib/firebase';
 import { signOut } from 'firebase/auth';
 import { cn } from '../../components/ui/Button'; // Re-using cn utility
+import { Loader } from '../ui/Loader';
 
 export const Navbar: React.FC = () => {
     const { user, role } = useAuth();
@@ -13,6 +14,7 @@ export const Navbar: React.FC = () => {
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
     // Handle scroll effect
     useEffect(() => {
@@ -30,10 +32,15 @@ export const Navbar: React.FC = () => {
 
     const handleLogout = async () => {
         try {
+            setIsLoggingOut(true);
+            // Artificial delay for realistic loading feel
+            await new Promise(resolve => setTimeout(resolve, 2000));
             await signOut(auth);
             navigate('/login');
         } catch (error) {
             console.error('Error signing out:', error);
+        } finally {
+            setIsLoggingOut(false);
         }
     };
 
@@ -195,6 +202,11 @@ export const Navbar: React.FC = () => {
                     )}
                 </div>
             </div>
+            {isLoggingOut && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-white/80 backdrop-blur-sm">
+                    <Loader />
+                </div>
+            )}
         </nav>
     );
 };
