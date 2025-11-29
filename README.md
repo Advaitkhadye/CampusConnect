@@ -1,6 +1,6 @@
 # CampusConnect
 
-![CampusConnect Logo](/public/logo-new.png)
+
 
 CampusConnect is the ultimate platform for college clubs to create unforgettable events, build communities, and track engagement. It provides a seamless experience for students to discover and register for events, and for organizers to manage them efficiently.
 
