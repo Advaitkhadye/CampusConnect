@@ -6,6 +6,7 @@ import { EventCard } from './EventCard';
 import { Search } from 'lucide-react';
 import { EventDetailsModal } from './EventDetailsModal';
 import { RegisterModal } from './RegisterModal';
+import { SuccessModal } from '../../components/ui/SuccessModal';
 import { Loader } from '../../components/ui/Loader';
 
 export const Events: React.FC = () => {
@@ -16,6 +17,7 @@ export const Events: React.FC = () => {
     const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+    const [isSuccessOpen, setIsSuccessOpen] = useState(false);
     const { user } = useAuth();
     const navigate = useNavigate();
 
@@ -75,19 +77,37 @@ export const Events: React.FC = () => {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
-                <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
-                    {categories.map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => setFilter(cat)}
-                            className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${filter === cat
-                                ? 'bg-gray-900 text-white'
-                                : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-                                }`}
+                <div className="w-full sm:w-auto">
+                    {/* Mobile Filter Dropdown */}
+                    <div className="sm:hidden">
+                        <select
+                            value={filter}
+                            onChange={(e) => setFilter(e.target.value)}
+                            className="w-full rounded-lg border border-gray-300 py-2.5 px-4 text-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 bg-white"
                         >
-                            {cat}
-                        </button>
-                    ))}
+                            {categories.map((cat) => (
+                                <option key={cat} value={cat}>
+                                    {cat}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Desktop Filter Pills */}
+                    <div className="hidden sm:flex gap-2 overflow-x-auto pb-2 sm:pb-0">
+                        {categories.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => setFilter(cat)}
+                                className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${filter === cat
+                                    ? 'bg-gray-900 text-white'
+                                    : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+                                    }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -127,9 +147,15 @@ export const Events: React.FC = () => {
                         onClose={() => setIsRegisterOpen(false)}
                         event={selectedEvent}
                         onSuccess={() => {
-                            // Optionally show success message
                             setIsRegisterOpen(false);
+                            setIsSuccessOpen(true);
                         }}
+                    />
+                    <SuccessModal
+                        isOpen={isSuccessOpen}
+                        onClose={() => setIsSuccessOpen(false)}
+                        title="Registered Successfully!"
+                        message="You have successfully registered for this event."
                     />
                 </>
             )}

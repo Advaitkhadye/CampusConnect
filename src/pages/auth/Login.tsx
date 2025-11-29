@@ -115,8 +115,8 @@ export const Login: React.FC = () => {
                     <div className="text-center lg:text-left">
                         <div className="flex justify-center lg:justify-start mb-6">
                             <Link to="/" className="flex items-center gap-2 group">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 text-white transition-transform group-hover:scale-110 shadow-lg shadow-primary-500/20">
-                                    <Sparkles className="h-6 w-6" />
+                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-indigo-600 text-white transition-transform group-hover:scale-110 shadow-lg shadow-primary-500/20 overflow-hidden">
+                                    <img src="/logo-new.png" alt="Logo" className="h-full w-full object-cover" />
                                 </div>
                                 <span className="text-2xl font-bold text-gray-900 tracking-tight">
                                     CampusConnect

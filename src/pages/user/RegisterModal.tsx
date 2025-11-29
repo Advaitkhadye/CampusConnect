@@ -13,12 +13,22 @@ interface RegisterModalProps {
 }
 
 export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose, event, onSuccess }) => {
-    const { user } = useAuth();
+    const { user, userData } = useAuth();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         studentName: '',
         studentId: ''
     });
+
+    // Auto-fill form data when modal opens or userData changes
+    React.useEffect(() => {
+        if (userData) {
+            setFormData({
+                studentName: userData.name || '',
+                studentId: userData.studentId || ''
+            });
+        }
+    }, [userData, isOpen]);
 
     if (!isOpen || !user) return null;
 
@@ -66,6 +76,8 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose, e
                         onChange={(e) => setFormData({ ...formData, studentName: e.target.value })}
                         required
                         placeholder="Enter your full Name"
+                        readOnly
+                        className="bg-gray-100 cursor-not-allowed"
                     />
 
                     <Input

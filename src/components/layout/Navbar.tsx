@@ -74,7 +74,7 @@ export const Navbar: React.FC = () => {
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center gap-2">
                     <Link to="/" className="flex items-center gap-2 group">
-                        <img src="/logo.png" alt="Logo" className="h-8 w-8 rounded-lg object-cover transition-transform group-hover:scale-110" />
+                        <img src="/logo-new.png" alt="Logo" className="h-12 w-12 rounded-lg object-cover transition-transform group-hover:scale-110" />
                         <span className="text-xl font-bold text-gray-900 tracking-tight">
                             CampusConnect
                         </span>

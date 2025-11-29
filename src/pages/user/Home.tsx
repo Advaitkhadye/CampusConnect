@@ -8,14 +8,14 @@ import { Card, CardContent } from '../../components/ui/Card';
 export const Home: React.FC = () => {
     const { role } = useAuth();
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-100 via-purple-100 to-white -z-10"></div>
+            <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-primary-200/30 blur-3xl -z-10"></div>
+            <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-indigo-200/30 blur-3xl -z-10"></div>
             {/* Hero Section */}
             <section className="relative pt-20 pb-32 lg:pt-32 lg:pb-40 overflow-hidden">
-                <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary-100/50 via-gray-50 to-gray-50"></div>
-                <div className="absolute top-0 right-0 -z-10 h-96 w-96 rounded-full bg-primary-200/30 blur-3xl"></div>
-                <div className="absolute bottom-0 left-0 -z-10 h-96 w-96 rounded-full bg-indigo-200/30 blur-3xl"></div>
 
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center max-w-4xl mx-auto space-y-8 animate-fade-in flex flex-col items-center">
                         <div className="inline-flex items-center rounded-full border border-primary-200 bg-primary-50 px-3 py-1 text-sm font-medium text-primary-800 mb-4">
                             <span className="flex h-2 w-2 rounded-full bg-primary-600 mr-2 animate-pulse"></span>
