@@ -43,5 +43,4 @@ Designed for college clubs to:
 
 ---
 
-> 📌 *This project is part of my portfolio and focuses on showcasing features and architecture rather than open-source reuse.*
 
